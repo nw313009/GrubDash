@@ -7,7 +7,7 @@ const dishes = require(path.resolve("src/data/dishes-data"));
 const nextId = require("../utils/nextId");
 
 //Validates the required body strings i.e. 'name', 'description', and 'image_url'
-const bodyHasData = (property) => {
+function bodyHasData (property) {
   return (req, res, next) => {
     const { data = {}} = req.body;
     if(data[property] && data[property] !== ''){
@@ -21,7 +21,7 @@ const bodyHasData = (property) => {
 }
 
 //Validates that the router param dishId, matches with the body requests `id`
-const matchingDish = (req, res, next) => {
+function matchingDish (req, res, next) {
   const { dishId } = req.params;
   const { data: {id} = {}} = req.body;
   if(id){
@@ -38,7 +38,7 @@ const matchingDish = (req, res, next) => {
 }
 
 //Validates that the body is a valid price and integer
-const validPrice = (req, res, next) => {
+function validPrice (req, res, next) {
   const { data: { price } = {}} = req.body;
   if(Number(price) > 0 && typeof price === "number"){
     next();
@@ -52,7 +52,7 @@ const validPrice = (req, res, next) => {
 
 
 //Validates and checks that the dish exists
-const dishExists = (req, res, next) => {
+function dishExists (req, res, next) {
   const { dishId } = req.params;
   const foundDish = dishes.find((dish) => dish.id === dishId);
   if (foundDish) {
@@ -67,7 +67,7 @@ const dishExists = (req, res, next) => {
 };
 
 //Post method to create new dish
-const create = (req, res) => {
+function create (req, res) {
   const {
     data: { name, description, price, image_url },
   } = req.body;
@@ -82,12 +82,12 @@ const create = (req, res) => {
   res.status(201).json({ data: newDish });
 };
 //Get one dish
-const read = (req, res) => {
+function read (req, res)  {
   const dish = res.locals.dish;
   res.json({ data: dish });
 };
 //Put request handling
-const update = (req, res) => {
+function update (req, res) {
   const dish = res.locals.dish;
   const {
     data: { name, description, price, image_url },
@@ -101,7 +101,7 @@ const update = (req, res) => {
   res.json({ data: dish });
 };
 //Get method to view all dishes
-const list = (req, res) => {
+function list (req, res){
   res.json({ data: dishes });
 };
 
